@@ -55,5 +55,6 @@ If you had a problem that requires you to restart or interrupt the process, just
 - You can always stops the Game Repair process anytime and re-run it once you're ready. But note that the game will always crash or have problems before all the files is downloaded.
 
 # Special Thanks
+- aria2c by Tatsuhiro Tsujikawa (tatsuhiro-t) https://github.com/aria2/aria2
 - Collapse Launcher project by neon-nyan https://github.com/neon-nyan/Collapse/
 - MadeBaruna for reference on how to make a PowerShell script runs from internet (Shout out Paimon.moe project)
