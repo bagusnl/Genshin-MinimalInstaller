@@ -111,7 +111,6 @@ game_version=$latestVersion
         $audioHash = $selectedAudioItem.md5
         Write-Host Adding $selectedAudioItem.language audio package to the download job...
         Add-Content -Path $fileOut.FullName -value "$audioUri"
-        Add-Content -Path $fileOut.FullName -value "    out=/"
         Add-Content -Path $fileOut.FullName -value "    checksum=md5=$audioHash"
         Add-Content -Path $fileOut.FullName -value ""
         
