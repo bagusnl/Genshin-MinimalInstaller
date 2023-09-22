@@ -1,6 +1,7 @@
 # Genshin-MinimalInstaller
 
-A new way to install Genshin Impact
+A new way to install Genshin Impact.
+
 Advantages (for standalone script):
  - Does not require 120GB free space!
  - Multithreaded file download (using + aria2c)
@@ -14,12 +15,13 @@ Advantages (for standalone script):
 4. Copy and paste this code to the PowerShell window
     > ```powershell
     > Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex "&{$((New-Object System.Net.WebClient).DownloadString('https://github.com/bagusnl/Genshin-MinimalInstaller/raw/main/script-standalone.ps1'))} global"
-    >    ```
+    >```
 5. Run the script by pressing enter
 6. Follow the instruction inside the window
 
 #### Notes:
 If you had a problem that requires you to restart or interrupt the process, just re-run the script and it will continue from the last file you downloaded.
+You can add the game to both Genshin's Official Launcher or custom launcher (like Collapse Launcher) if you prefer to do so.
 
 ### Collapse script
 > This is much smaller script intended to be used with [Collapse Launcher](https://github.com/neon-nyan/Collapse/) as the file assets downloaded and the launcher.
@@ -32,7 +34,7 @@ If you had a problem that requires you to restart or interrupt the process, just
 4. Copy and paste this code to the PowerShell window
    > ```powershell
    > Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex "&{$((New-Object System.Net.WebClient).DownloadString('https://github.com/bagusnl/Genshin-MinimalInstaller/raw/main/script-collapse.ps1'))} global"
-   >    ```
+   >```
 5. Run the script by pressing enter
 6. Follow the instruction inside the window
 7. Run Collapse Launcher and press "Locate Game"
@@ -53,6 +55,12 @@ If you had a problem that requires you to restart or interrupt the process, just
      > ```
   4. Run the Game Repair sequence in Collapse
 - You can always stops the Game Repair process anytime and re-run it once you're ready. But note that the game will always crash or have problems before all the files is downloaded.
+
+# How to update game ?
+It is recommended to use the zip method (look on technical-channel channel on Genshin Impact Discord server), or using launcher.
+
+If you use Collapse Launcher, you can also change the game_version string inside the config.ini to the current updated version to simulate updated installation, then use the Game Repair to update all the files and assets to the current version. NOTE that this will only works AFTER the patch is dropped (after maintenance is done).
+
 
 # Special Thanks
 - aria2c by Tatsuhiro Tsujikawa (tatsuhiro-t) https://github.com/aria2/aria2
