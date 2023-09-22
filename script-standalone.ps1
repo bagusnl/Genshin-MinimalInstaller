@@ -102,6 +102,11 @@ game_version=$latestVersion
         # Download files using aria2c
         $jobFileName = $fileOut.FullName
         .\aria2c --input-file=$jobFileName --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session.txt
+        
+        # Extract audio package file
+        $audioFileUri = New-Object System.Uri($audioUri)
+        $audioFileName = $audioFileUri.Segments[-1]
+        Expand-Archive -path $audioFileName.FullName
     }
     catch
     {
