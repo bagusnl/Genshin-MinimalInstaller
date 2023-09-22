@@ -8,6 +8,21 @@ if (Test-Path "downloadjob.txt")
 {
 Write-Host Found uncompleted download! Continuing download...
 .\aria2c --input-file="downloadjob.txt" --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session.txt
+$directory = Get-Location
+$audioFileName =(Get-ChildItem -path $directory -Filter "Audio_*.zip").Name
+
+# Extract audio package file
+$audioFileUri = New-Object System.Uri($audioUri)
+$audioFileName = $uri.Segments[-1]
+Expand-Archive -path $audioFileName.FullName
+
+# Cleanups
+Remove-Item aria2c.exe -ErrorAction SilentlyContinue
+Remove-Item downloadjob.txt -ErrorAction SilentlyContinue
+Remove-Item $audioFileName -ErrorAction SilentlyContinue
+
+Write-Host Installed Genshin Impact version $latestVersion!
+exit
 }
 # Display a menu to select a Game Region
 Write-Host "Select a Game Region:"
@@ -107,6 +122,18 @@ game_version=$latestVersion
         # Download files using aria2c
         $jobFileName = $fileOut.FullName
         .\aria2c --input-file=$jobFileName --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session.txt
+
+        # Extract audio package file
+        $audioFileUri = New-Object System.Uri($audioUri)
+        $audioFileName = $uri.Segments[-1]
+        Expand-Archive -path $audioFileName.FullName
+
+        # Cleanups
+        Remove-Item aria2c.exe -ErrorAction SilentlyContinue
+        Remove-Item downloadjob.txt -ErrorAction SilentlyContinue
+        Remove-Item $audioFileName -ErrorAction SilentlyContinue
+
+        Write-Host Installed Genshin Impact version $latestVersion!
     }
     catch
     {
@@ -119,14 +146,7 @@ else {
     Write-Host Please re-run the script
 }
 
-# Extract audio package file
-$audioFileUri = New-Object System.Uri($audioUri)
-$audioFileName = $uri.Segments[-1]
-Expand-Archive -path $audioFileName.FullName
-
-# Cleanups
-Remove-Item aria2c.exe -ErrorAction SilentlyContinue
-Remove-Item downloadjob.txt -ErrorAction SilentlyContinue
-Remove-Item $audioFileName
-
-Write-Host Installed Genshin Impact version $latestVersion!
+# TODO
+# - Code cleanup
+# - Initialize statics on the top of the script
+ #>
