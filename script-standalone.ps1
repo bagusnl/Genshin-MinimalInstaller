@@ -125,7 +125,7 @@ game_version=$latestVersion
         # Extract audio package file
         $audioFileUri = New-Object System.Uri($audioUri)
         $audioFileName = $uri.Segments[-1]
-        Expand-Archive -path $audioFileName.FullName
+        Expand-Archive -path $audioFileName
 
         # Cleanups
         Remove-Item aria2c.exe -ErrorAction SilentlyContinue
