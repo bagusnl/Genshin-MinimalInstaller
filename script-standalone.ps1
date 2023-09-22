@@ -4,7 +4,7 @@ $regions = @{
     "Genshin-CN" = "https://sdk-static.mihoyo.com/hk4e_cn/mdk/launcher/api/resource?channel_id=1&key=eYd89JmJ&launcher_id=18&sub_channel_id=1"
 }
 
-if (Test-Path "session.txt")
+if (Test-Path "downloadjob.txt")
 {
 Write-Host Found uncompleted download! Continuing download...
 .\aria2c --input-file="downloadjob.txt" --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session.txt
@@ -107,15 +107,26 @@ game_version=$latestVersion
         # Download files using aria2c
         $jobFileName = $fileOut.FullName
         .\aria2c --input-file=$jobFileName --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session.txt
-        
-        # Extract audio package file
-        $audioFileUri = New-Object System.Uri($audioUri)
-        $audioFileName = $uri.Segments[-1]
-        Expand-Archive -path $audioFileName.FullName
     }
     catch
     {
+        Write-Host An error has occured!
         Write-Host $_
     }
 }
-else { }
+else { 
+    Write-Host Selection invalid!
+    Write-Host Please re-run the script
+}
+
+# Extract audio package file
+$audioFileUri = New-Object System.Uri($audioUri)
+$audioFileName = $uri.Segments[-1]
+Expand-Archive -path $audioFileName.FullName
+
+# Cleanups
+Remove-Item aria2c.exe -ErrorAction SilentlyContinue
+Remove-Item downloadjob.txt -ErrorAction SilentlyContinue
+Remove-Item $audioFileName
+
+Write-Host Installed Genshin Impact version $latestVersion!
