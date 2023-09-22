@@ -4,6 +4,11 @@ $regions = @{
     "Genshin-CN" = "https://sdk-static.mihoyo.com/hk4e_cn/mdk/launcher/api/resource?channel_id=1&key=eYd89JmJ&launcher_id=18&sub_channel_id=1"
 }
 
+if (Test-Path "session.txt")
+{
+Write-Host Found uncompleted download! Continuing download...
+.\aria2c --input-file="downloadjob.txt" --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session.txt
+}
 # Display a menu to select a Game Region
 Write-Host "Select a Game Region:"
 $index = 1
@@ -43,8 +48,8 @@ if ($selection -ge 1 -and $selection -le $regions.Count)
         }
         
         $selectedAudioItem = $objectAudio[$selectedAudio - 1]
-        Write-Host Audio Language : $selectedAudioItem.language
-        Write-Host Link : $selectedAudioItem.path
+        # Write-Host Audio Language : $selectedAudioItem.language
+        # Write-Host Link : $selectedAudioItem.path
 
         # Generate config.ini file
         $configFileName = "config.ini"
@@ -60,7 +65,7 @@ game_version=$latestVersion
         # Get pkg_version
         $pkgUri = $decompressedPath + "/" + "pkg_version"
         Write-Host Getting pkg_version file...
-        Write-Host $pkgUri
+        # Write-Host $pkgUri
         Invoke-WebRequest -Uri $pkgUri -OutFile pkg_version
         $pkg_version = Get-Content -Path "pkg_version"
         
@@ -105,7 +110,7 @@ game_version=$latestVersion
         
         # Extract audio package file
         $audioFileUri = New-Object System.Uri($audioUri)
-        $audioFileName = $audioFileUri.Segments[-1]
+        $audioFileName = $uri.Segments[-1]
         Expand-Archive -path $audioFileName.FullName
     }
     catch
