@@ -2,10 +2,16 @@
 
 A new way to install Genshin Impact.
 
+This script will install Genshin Impact without its launcher. It downloads each files individually (whopping 12K+ files) meaning it doesn't have to download the zip package first (except Audio) package and only requiring about 90GB (~60GB for the game and ~30GB for audio package) of free space. This is also useful for someone with bad internet as when download corruption occurred, it will retry to download smaller file instead of redownloading an (or multiple) zip segments.
+
 Advantages (for standalone script):
  - Does not require 120GB free space!
  - Multithreaded file download (using + aria2c)
  - All downloaded file is verified for corruption
+ - Bad internet friendly
+
+### TODO
+ - Make Audio package installation be done before base game files to help more with free space requirements. Currently its not possible to download Audio package files individually due to it not being served as individual files.
 
 ## How to use 
 ### Standalone script
@@ -61,6 +67,8 @@ It is recommended to use the zip method (look on technical-channel channel on Ge
 
 If you use Collapse Launcher, you can also change the game_version string inside the config.ini to the current updated version to simulate updated installation, then use the Game Repair to update all the files and assets to the current version. NOTE that this will only works AFTER the patch is dropped (after maintenance is done).
 
+# Disclaimer
+This project is **NOT** affiliated with miHoYo (miHoYo Co., Ltd.) or HoYoverse (COGNOSPHERE PTE. LTD.) in any way. Genshin Impact and Honkai Impact are registered trademark of miHoYo Co., Ltd. under USPTO SN 88985076/97256855 and 87814281 respectively.
 
 # Special Thanks
 - aria2c by Tatsuhiro Tsujikawa (tatsuhiro-t) https://github.com/aria2/aria2
