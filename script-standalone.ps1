@@ -7,19 +7,25 @@ $regions = @{
 if (Test-Path "downloadjob.txt")
 {
 Write-Host Found uncompleted download! Continuing download...
-.\aria2c --input-file="downloadjob.txt" --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session.txt
+
+if (Test-Path "audio_downloadjob.txt"){
+.\aria2c.exe --input-file=$jobFileAudio --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session_audio.txt
 $directory = Get-Location
 $audioFileName =(Get-ChildItem -path $directory -Filter "Audio_*.zip").Name
 
-# Extract audio package file
-$audioFileUri = New-Object System.Uri($audioUri)
-$audioFileName = $uri.Segments[-1]
+# Extract audio package 
+Write-Host "Extracting audio package..."
 Expand-Archive -path $audioFileName.FullName
 
+Remove-Item audio_downloadjob.txt -ErrorAction Continue
+Remove-Item $audioFileName -ErrorAction Continue
+}
+Write-Host "Downloading main game files..."
+.\aria2c --input-file="downloadjob.txt" --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session.txt
+
 # Cleanups
-Remove-Item aria2c.exe -ErrorAction SilentlyContinue
-Remove-Item downloadjob.txt -ErrorAction SilentlyContinue
-Remove-Item $audioFileName -ErrorAction SilentlyContinue
+Remove-Item aria2c.exe -ErrorAction Continue
+Remove-Item downloadjob.txt -ErrorAction Continue
 
 Write-Host Installed Genshin Impact version $latestVersion!
 exit
@@ -84,53 +90,64 @@ game_version=$latestVersion
         Invoke-WebRequest -Uri $pkgUri -OutFile pkg_version
         $pkg_version = Get-Content -Path "pkg_version"
         
-        # Parse and generate aria2c input file
-        $jobFile = "downloadjob.txt"
-        if (Test-Path $jobFile)
-        {
-            Remove-Item $jobFile -ErrorAction SilentlyContinue
-        }
-        
-        $fileOut = New-Item -Path $jobFile
-        Write-Host Generating aria2c input file...
-        foreach($line in $pkg_version)
-        {
-            $item = ConvertFrom-Json -InputObject $line
-            # Write-Host Found $item.remoteName! Adding to $fileOut...
-            $fullUri = "{0}/{1}" -f $decompressedPath, $item.remoteName
-            $outFile = $item.remoteName
-            $md5Hash = $item.md5
-            Add-Content -Path $fileOut.FullName -value "$fullUri"
-            Add-Content -Path $fileOut.FullName -value "    out=$outFile"
-            Add-Content -Path $fileOut.FullName -value "    checksum=md5=$md5Hash"
-            Add-Content -Path $fileOut.FullName -value ""
-        }
-        
-        # Add audio package to the download list
-        $audioUri = $selectedAudioItem.path
-        $audioHash = $selectedAudioItem.md5
-        Write-Host Adding $selectedAudioItem.language audio package to the download job...
-        Add-Content -Path $fileOut.FullName -value "$audioUri"
-        Add-Content -Path $fileOut.FullName -value "    checksum=md5=$audioHash"
-        Add-Content -Path $fileOut.FullName -value ""
-        
         # Grab aria2c from repo
+        Write-Host "Getting aria2c from the repo..."
         $aria2cUri = "https://github.com/bagusnl/Genshin-MinimalInstaller/raw/main/tools/aria2c.exe"
         Invoke-WebRequest -Uri $aria2cUri -OutFile aria2c.exe
-        
-        # Download files using aria2c
-        $jobFileName = $fileOut.FullName
-        .\aria2c --input-file=$jobFileName --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session.txt
 
-        # Extract audio package file
+        # Parse and generate aria2c input file
+        $jobFile = "downloadjob.txt"
+
+        if (Test-Path $jobFile) { Remove-Item $jobFile -ErrorAction Continue }
+
+        Write-Host "Generating aria2c input file..."
+        
+        # Use StringBuilder to make the job file faster
+        $contentBuilder = [System.Text.StringBuilder]::new()
+
+        foreach ($line in $pkg_version | ConvertFrom-Json) {
+            $fullUri = "{0}/{1}" -f $decompressedPath, $line.remoteName
+            $outFile = $line.remoteName
+            $md5Hash = $line.md5
+
+            # Append content to the StringBuilder
+            [void]$contentBuilder.AppendLine("$fullUri")
+            [void]$contentBuilder.AppendLine("    out=$outFile")
+            [void]$contentBuilder.AppendLine("    checksum=md5=$md5Hash")
+            [void]$contentBuilder.AppendLine("")
+        }
+
+        # Write all main download job
+        $contentBuilder.ToString() | Out-File -FilePath $jobFile
+        
+        # Add audio package to the download list
+        $jobFileAudio = "audio_downloadjob.txt"
+        if (Test-Path $jobFileAudio) { Remove-Item $jobFileAudio -ErrorAction Continue }
+        $fileOutAudio = New-Item -Path $jobFileAudio
+
+        Write-Host Adding $selectedAudioItem.language audio package to the download job...
+        $audioUri = $selectedAudioItem.path
+        $audioHash = $selectedAudioItem.md5
+        Add-Content -Path $fileOutAudio.FullName -value "$audioUri"
+        Add-Content -Path $fileOutAudio.FullName -value "    checksum=md5=$audioHash"
+        Add-Content -Path $fileOutAudio.FullName -value ""
+        
+        # Download audio archive then extract
+        Write-Host "Downloading audio file..."
+        .\aria2c.exe --input-file=$jobFileAudio --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session_audio.txt
         $audioFileUri = New-Object System.Uri($audioUri)
         $audioFileName = $uri.Segments[-1]
         Expand-Archive -path $audioFileName
+        Remove-Item $audioFileName -ErrorAction Continue
+        Remove-Item $jobFileAudio -ErrorAction Continue
+
+        # Download main game files
+        Write-Host "Downloading main game files..."
+        .\aria2c --input-file=$jobFile --max-connection-per-server=16 --max-concurrent-downloads=8 --max-tries=0 --split=8 --continue --save-session session_main.txt
 
         # Cleanups
-        Remove-Item aria2c.exe -ErrorAction SilentlyContinue
-        Remove-Item downloadjob.txt -ErrorAction SilentlyContinue
-        Remove-Item $audioFileName -ErrorAction SilentlyContinue
+        Remove-Item downloadjob.txt -ErrorAction Continue
+        Remove-Item aria2c.exe -ErrorAction Continue
 
         Write-Host Installed Genshin Impact version $latestVersion!
     }
