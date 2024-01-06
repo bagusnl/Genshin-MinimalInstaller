@@ -20,7 +20,7 @@ Advantages (for standalone script):
 3. Press "Open PowerShell window here"
 4. Copy and paste this code to the PowerShell window
     > ```powershell
-    > Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex "&{$((New-Object System.Net.WebClient).DownloadString('https://github.com/bagusnl/Genshin-MinimalInstaller/raw/main/script-standalone.ps1'))} global"
+    > Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://github.com/bagusnl/Genshin-MinimalInstaller/raw/main/script-standalone.ps1'))
     >```
 5. Run the script by pressing enter
 6. Follow the instruction inside the window
@@ -39,7 +39,7 @@ You can add the game to both Genshin's Official Launcher or custom launcher (lik
 3. Press "Open PowerShell window here"
 4. Copy and paste this code to the PowerShell window
    > ```powershell
-   > Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex "&{$((New-Object System.Net.WebClient).DownloadString('https://github.com/bagusnl/Genshin-MinimalInstaller/raw/main/script-collapse.ps1'))} global"
+   > Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://github.com/bagusnl/Genshin-MinimalInstaller/raw/main/script-collapse.ps1'))
    >```
 5. Run the script by pressing enter
 6. Follow the instruction inside the window
