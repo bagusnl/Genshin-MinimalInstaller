@@ -10,9 +10,6 @@ Advantages (for standalone script):
  - All downloaded file is verified for corruption
  - Bad internet friendly
 
-### TODO
- - Make Audio package installation be done before base game files to help more with free space requirements. Currently its not possible to download Audio package files individually due to it not being served as individual files.
-
 ## How to use 
 ### Standalone script
 1. Go to folder you want to install Genshin on (empty folder is HIGHLY recommended)
