@@ -118,7 +118,7 @@ game_version=$latestVersion
         }
 
         # Write all main download job
-        $contentBuilder.ToString() | Out-File -FilePath $jobFile
+        $contentBuilder.ToString() | Out-File -FilePath $jobFile -Encoding ASCII
         
         # Add audio package to the download list
         $jobFileAudio = "audio_downloadjob.txt"
