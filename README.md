@@ -27,6 +27,8 @@ If you had a problem that requires you to restart or interrupt the process, just
 You can add the game to both Genshin's Official Launcher or custom launcher (like Collapse Launcher) if you prefer to do so.
 
 ### Collapse script
+> Currently broken, please use Standalone script!
+
 > This is much smaller script intended to be used with [Collapse Launcher](https://github.com/neon-nyan/Collapse/) as the file assets downloaded and the launcher.
 > If you want to use or intended to use Collapse to manage the game, use this script instead.
 > Requires Collapse Launcher version 1.72.0+
