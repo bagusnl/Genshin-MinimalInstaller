@@ -64,7 +64,10 @@ You can add the game to both Genshin's Official Launcher or custom launcher (lik
 # How to update game ?
 It is recommended to use the zip method (look on technical-channel channel on Genshin Impact Discord server), or using launcher.
 
-If you use Collapse Launcher, you can also change the game_version string inside the config.ini to the current updated version to simulate updated installation, then use the Game Repair to update all the files and assets to the current version. NOTE that this will only works AFTER the patch is dropped (after maintenance is done).
+If you use Collapse Launcher, you can also change the game_version string inside the config.ini to the current updated version to simulate updated installation, then use the Game Repair to update all the files and assets to the current version. 
+**NOTES**:
+> - This will only works AFTER the patch is dropped (after maintenance is done).
+> - Updating this way will not delete unused files (you have to get delete_files.txt file from the delta zip.
 
 # Disclaimer
 This project is **NOT** affiliated with miHoYo (miHoYo Co., Ltd.) or HoYoverse (COGNOSPHERE PTE. LTD.) in any way. Genshin Impact and Honkai Impact are registered trademark of miHoYo Co., Ltd. under USPTO SN 88985076/97256855 and 87814281 respectively.
