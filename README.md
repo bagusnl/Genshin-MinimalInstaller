@@ -1,3 +1,6 @@
+# Deprecated
+This way of installing Genshin and other supported games is deprecated due to the release of Sophon download method. The script will not get any update anymore and no support will be provided. Thank you for using this project!
+
 # Genshin-MinimalInstaller
 
 A new way to install Genshin Impact.
